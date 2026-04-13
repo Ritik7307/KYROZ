@@ -1,0 +1,15 @@
+{
+  "name": "smart-kitchen-saas",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:core": "npm --workspace apps/api-core run dev",
+    "dev:ai": "python -m uvicorn app.main:app --reload --port 8001 --app-dir apps/api-ai",
+    "dev:admin": "npm --workspace apps/web-admin run dev",
+    "dev:chef": "npm --workspace apps/web-chef run dev"
+  }
+}
