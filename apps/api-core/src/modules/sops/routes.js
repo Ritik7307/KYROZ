@@ -1,9 +1,11 @@
 import { Router } from "express";
+import { requireAuth } from "../../common/auth.js";
+import { listSops } from "../../common/chatbot.js";
 
 export const sopRouter = Router();
 
-sopRouter.get("/", (_req, res) => {
-  res.json({ items: [] });
+sopRouter.get("/", requireAuth, (_req, res) => {
+  res.json({ items: listSops() });
 });
 
 sopRouter.post("/upload", (_req, res) => {

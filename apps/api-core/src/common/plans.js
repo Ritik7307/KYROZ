@@ -9,8 +9,8 @@ export const PLAN_CONFIG = {
     code: PLAN_CODES.BASIC_999,
     priceInr: 999,
     maxDevices: 1,
-    dailyChatLimit: 1,
-    features: ["basic_chatbot", "single_device_access"]
+    dailyChatLimit: null,
+    features: ["unlimited_chatbot", "single_device_access"]
   },
   [PLAN_CODES.PRO_2999]: {
     code: PLAN_CODES.PRO_2999,

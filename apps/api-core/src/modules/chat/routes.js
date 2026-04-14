@@ -1,12 +1,15 @@
 import { Router } from "express";
 import { validateAndTrackChatUsage, validateDeviceAccess } from "../../common/entitlements.js";
 import { getPlanConfig } from "../../common/plans.js";
+import { requireAuth } from "../../common/auth.js";
+import { db } from "../../db/store.js";
+import { generateSopAnswer } from "../../common/chatbot.js";
 
 export const chatRouter = Router();
 
-chatRouter.post("/query", (req, res) => {
+chatRouter.post("/query", requireAuth, (req, res) => {
   const tenantId = req.body?.tenantId;
-  const userId = req.body?.userId;
+  const userId = req.user?.id || req.body?.userId;
   const planCode = req.body?.planCode;
   const deviceId = req.headers["x-device-id"] || req.body?.deviceId;
 
@@ -32,9 +35,20 @@ chatRouter.post("/query", (req, res) => {
 
   const plan = getPlanConfig(planCode);
   const question = req.body?.question || "";
+  const bot = generateSopAnswer(question);
+
+  db.saveChatMessage({
+    id: `chat_${Date.now()}`,
+    userId,
+    tenantId,
+    question,
+    answer: bot.answer,
+    at: new Date().toISOString()
+  });
+
   return res.json({
-    answer: `Demo answer for: ${question}`,
-    citations: [],
+    answer: bot.answer,
+    citations: bot.citations,
     model: "gpt-4o-mini",
     tenantId,
     plan: {

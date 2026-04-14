@@ -9,7 +9,8 @@
   "scripts": {
     "dev:core": "npm --workspace apps/api-core run dev",
     "dev:ai": "python -m uvicorn app.main:app --reload --port 8001 --app-dir apps/api-ai",
-    "dev:admin": "npm --workspace apps/web-admin run dev",
-    "dev:chef": "npm --workspace apps/web-chef run dev"
+    "dev:member": "npm --workspace apps/web-admin run dev",
+    "dev:admin": "npm run dev:member",
+    "dev:chef": "npm run dev:member"
   }
 }
